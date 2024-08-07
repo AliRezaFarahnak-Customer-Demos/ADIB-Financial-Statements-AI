@@ -20,7 +20,6 @@ interface Props {
     showFollowupQuestions?: boolean;
     showSpeechOutputBrowser?: boolean;
     showSpeechOutputAzure?: boolean;
-    speechUrl: string | null;
 }
 
 export const Answer = ({
@@ -33,8 +32,7 @@ export const Answer = ({
     onFollowupQuestionClicked,
     showFollowupQuestions,
     showSpeechOutputAzure,
-    showSpeechOutputBrowser,
-    speechUrl
+    showSpeechOutputBrowser
 }: Props) => {
     const followupQuestions = answer.context?.followup_questions;
     const messageContent = answer.message.content;
@@ -64,7 +62,7 @@ export const Answer = ({
                             onClick={() => onSupportingContentClicked()}
                             disabled={!answer.context.data_points}
                         />
-                        {showSpeechOutputAzure && <SpeechOutputAzure url={speechUrl} />}
+                        {showSpeechOutputAzure && <SpeechOutputAzure answer={sanitizedAnswerHtml} />}
                         {showSpeechOutputBrowser && <SpeechOutputBrowser answer={sanitizedAnswerHtml} />}
                     </div>
                 </Stack>

@@ -9,7 +9,6 @@ import styles from "./Chat.module.css";
 import {
     chatApi,
     configApi,
-    getSpeechApi,
     RetrievalMode,
     ChatAppResponse,
     ChatAppResponseOrError,
@@ -67,6 +66,7 @@ const Chat = () => {
 
     const [selectedAnswer, setSelectedAnswer] = useState<number>(0);
     const [answers, setAnswers] = useState<[user: string, response: ChatAppResponse][]>([]);
+    const [speechUrls, setSpeechUrls] = useState<(string | null)[]>([]);
     const [streamedAnswers, setStreamedAnswers] = useState<[user: string, response: ChatAppResponse][]>([]);
 
     const [showGPT4VOptions, setShowGPT4VOptions] = useState<boolean>(false);
@@ -195,6 +195,7 @@ const Chat = () => {
                 }
                 setAnswers([...answers, [question, parsedResponse as ChatAppResponse]]);
             }
+            setSpeechUrls([...speechUrls, null]);
         } catch (e) {
             setError(e);
         } finally {
@@ -208,6 +209,7 @@ const Chat = () => {
         setActiveCitation(undefined);
         setActiveAnalysisPanelTab(undefined);
         setAnswers([]);
+        setSpeechUrls([]);
         setStreamedAnswers([]);
         setIsLoading(false);
         setIsStreaming(false);
@@ -351,6 +353,9 @@ const Chat = () => {
                                                 isStreaming={true}
                                                 key={index}
                                                 answer={streamedAnswer[1]}
+                                                index={index}
+                                                speechUrls={speechUrls}
+                                                updateSpeechUrls={setSpeechUrls}
                                                 isSelected={false}
                                                 onCitationClicked={c => onShowCitation(c, index)}
                                                 onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab, index)}
@@ -372,6 +377,9 @@ const Chat = () => {
                                                 isStreaming={false}
                                                 key={index}
                                                 answer={answer[1]}
+                                                index={index}
+                                                speechUrls={speechUrls}
+                                                updateSpeechUrls={setSpeechUrls}
                                                 isSelected={selectedAnswer === index && activeAnalysisPanelTab !== undefined}
                                                 onCitationClicked={c => onShowCitation(c, index)}
                                                 onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab, index)}

@@ -14,6 +14,9 @@ interface Props {
     index: number;
     speechUrls: (string | null)[];
     updateSpeechUrls: (urls: (string | null)[]) => void;
+    audio: HTMLAudioElement;
+    isPlaying: boolean;
+    setIsPlaying: (isPlaying: boolean) => void;
     isSelected?: boolean;
     isStreaming: boolean;
     onCitationClicked: (filePath: string) => void;
@@ -30,6 +33,9 @@ export const Answer = ({
     index,
     speechUrls,
     updateSpeechUrls,
+    audio,
+    isPlaying,
+    setIsPlaying,
     isSelected,
     isStreaming,
     onCitationClicked,
@@ -68,7 +74,16 @@ export const Answer = ({
                             disabled={!answer.context.data_points}
                         />
                         {showSpeechOutputAzure && (
-                            <SpeechOutputAzure answer={sanitizedAnswerHtml} urls={speechUrls} index={index} updateSpeechUrls={updateSpeechUrls} />
+                            <SpeechOutputAzure
+                                answer={sanitizedAnswerHtml}
+                                urls={speechUrls}
+                                index={index}
+                                updateSpeechUrls={updateSpeechUrls}
+                                audio={audio}
+                                isPlaying={isPlaying}
+                                setIsPlaying={setIsPlaying}
+                                isStreaming={isStreaming}
+                            />
                         )}
                         {showSpeechOutputBrowser && <SpeechOutputBrowser answer={sanitizedAnswerHtml} />}
                     </div>

@@ -11,6 +11,12 @@ import { SpeechOutputAzure } from "./SpeechOutputAzure";
 
 interface Props {
     answer: ChatAppResponse;
+    index: number;
+    speechUrls: (string | null)[];
+    updateSpeechUrls: (urls: (string | null)[]) => void;
+    audio: HTMLAudioElement;
+    isPlaying: boolean;
+    setIsPlaying: (isPlaying: boolean) => void;
     isSelected?: boolean;
     isStreaming: boolean;
     onCitationClicked: (filePath: string) => void;
@@ -20,11 +26,16 @@ interface Props {
     showFollowupQuestions?: boolean;
     showSpeechOutputBrowser?: boolean;
     showSpeechOutputAzure?: boolean;
-    speechUrl: string | null;
 }
 
 export const Answer = ({
     answer,
+    index,
+    speechUrls,
+    updateSpeechUrls,
+    audio,
+    isPlaying,
+    setIsPlaying,
     isSelected,
     isStreaming,
     onCitationClicked,
@@ -33,13 +44,11 @@ export const Answer = ({
     onFollowupQuestionClicked,
     showFollowupQuestions,
     showSpeechOutputAzure,
-    showSpeechOutputBrowser,
-    speechUrl
+    showSpeechOutputBrowser
 }: Props) => {
     const followupQuestions = answer.context?.followup_questions;
     const messageContent = answer.message.content;
     const parsedAnswer = useMemo(() => parseAnswerToHtml(messageContent, isStreaming, onCitationClicked), [answer]);
-
     const sanitizedAnswerHtml = DOMPurify.sanitize(parsedAnswer.answerHtml);
 
     return (
@@ -64,7 +73,18 @@ export const Answer = ({
                             onClick={() => onSupportingContentClicked()}
                             disabled={!answer.context.data_points}
                         />
-                        {showSpeechOutputAzure && <SpeechOutputAzure url={speechUrl} />}
+                        {showSpeechOutputAzure && (
+                            <SpeechOutputAzure
+                                answer={sanitizedAnswerHtml}
+                                urls={speechUrls}
+                                index={index}
+                                updateSpeechUrls={updateSpeechUrls}
+                                audio={audio}
+                                isPlaying={isPlaying}
+                                setIsPlaying={setIsPlaying}
+                                isStreaming={isStreaming}
+                            />
+                        )}
                         {showSpeechOutputBrowser && <SpeechOutputBrowser answer={sanitizedAnswerHtml} />}
                     </div>
                 </Stack>

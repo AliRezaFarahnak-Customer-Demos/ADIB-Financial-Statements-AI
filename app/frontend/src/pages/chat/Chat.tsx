@@ -9,7 +9,6 @@ import styles from "./Chat.module.css";
 import {
     chatApi,
     configApi,
-    getSpeechApi,
     RetrievalMode,
     ChatAppResponse,
     ChatAppResponseOrError,
@@ -67,8 +66,8 @@ const Chat = () => {
 
     const [selectedAnswer, setSelectedAnswer] = useState<number>(0);
     const [answers, setAnswers] = useState<[user: string, response: ChatAppResponse][]>([]);
-    const [streamedAnswers, setStreamedAnswers] = useState<[user: string, response: ChatAppResponse][]>([]);
     const [speechUrls, setSpeechUrls] = useState<(string | null)[]>([]);
+    const [streamedAnswers, setStreamedAnswers] = useState<[user: string, response: ChatAppResponse][]>([]);
 
     const [showGPT4VOptions, setShowGPT4VOptions] = useState<boolean>(false);
     const [showSemanticRankerOption, setShowSemanticRankerOption] = useState<boolean>(false);
@@ -77,6 +76,8 @@ const Chat = () => {
     const [showSpeechInput, setShowSpeechInput] = useState<boolean>(false);
     const [showSpeechOutputBrowser, setShowSpeechOutputBrowser] = useState<boolean>(false);
     const [showSpeechOutputAzure, setShowSpeechOutputAzure] = useState<boolean>(false);
+    const audio = useRef(new Audio()).current;
+    const [isPlaying, setIsPlaying] = useState(false);
 
     const getConfig = async () => {
         configApi().then(config => {
@@ -199,6 +200,7 @@ const Chat = () => {
                 }
                 setAnswers([...answers, [question, parsedResponse as ChatAppResponse]]);
             }
+            setSpeechUrls([...speechUrls, null]);
         } catch (e) {
             setError(e);
         } finally {
@@ -212,6 +214,7 @@ const Chat = () => {
         setActiveCitation(undefined);
         setActiveAnalysisPanelTab(undefined);
         setAnswers([]);
+        setSpeechUrls([]);
         setStreamedAnswers([]);
         setIsLoading(false);
         setIsStreaming(false);
@@ -222,19 +225,6 @@ const Chat = () => {
     useEffect(() => {
         getConfig();
     }, []);
-
-    useEffect(() => {
-        if (answers && showSpeechOutputAzure) {
-            // For each answer that is missing a speech URL, fetch the speech URL
-            for (let i = 0; i < answers.length; i++) {
-                if (!speechUrls[i]) {
-                    getSpeechApi(answers[i][1].message.content).then(speechUrl => {
-                        setSpeechUrls([...speechUrls.slice(0, i), speechUrl, ...speechUrls.slice(i + 1)]);
-                    });
-                }
-            }
-        }
-    }, [answers]);
 
     const onPromptTemplateChange = (_ev?: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
         setPromptTemplate(newValue || "");
@@ -368,6 +358,12 @@ const Chat = () => {
                                                 isStreaming={true}
                                                 key={index}
                                                 answer={streamedAnswer[1]}
+                                                index={index}
+                                                speechUrls={speechUrls}
+                                                updateSpeechUrls={setSpeechUrls}
+                                                audio={audio}
+                                                isPlaying={isPlaying}
+                                                setIsPlaying={setIsPlaying}
                                                 isSelected={false}
                                                 onCitationClicked={c => onShowCitation(c, index)}
                                                 onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab, index)}
@@ -376,7 +372,6 @@ const Chat = () => {
                                                 showFollowupQuestions={useSuggestFollowupQuestions && answers.length - 1 === index}
                                                 showSpeechOutputAzure={showSpeechOutputAzure}
                                                 showSpeechOutputBrowser={showSpeechOutputBrowser}
-                                                speechUrl={speechUrls[index]}
                                             />
                                         </div>
                                     </div>
@@ -390,6 +385,12 @@ const Chat = () => {
                                                 isStreaming={false}
                                                 key={index}
                                                 answer={answer[1]}
+                                                index={index}
+                                                speechUrls={speechUrls}
+                                                audio={audio}
+                                                updateSpeechUrls={setSpeechUrls}
+                                                isPlaying={isPlaying}
+                                                setIsPlaying={setIsPlaying}
                                                 isSelected={selectedAnswer === index && activeAnalysisPanelTab !== undefined}
                                                 onCitationClicked={c => onShowCitation(c, index)}
                                                 onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab, index)}
@@ -398,7 +399,6 @@ const Chat = () => {
                                                 showFollowupQuestions={useSuggestFollowupQuestions && answers.length - 1 === index}
                                                 showSpeechOutputAzure={showSpeechOutputAzure}
                                                 showSpeechOutputBrowser={showSpeechOutputBrowser}
-                                                speechUrl={speechUrls[index]}
                                             />
                                         </div>
                                     </div>

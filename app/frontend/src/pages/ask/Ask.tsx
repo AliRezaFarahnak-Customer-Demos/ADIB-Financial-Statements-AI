@@ -48,13 +48,15 @@ export function Component(): JSX.Element {
     const [showSpeechInput, setShowSpeechInput] = useState<boolean>(false);
     const [showSpeechOutputBrowser, setShowSpeechOutputBrowser] = useState<boolean>(false);
     const [showSpeechOutputAzure, setShowSpeechOutputAzure] = useState<boolean>(false);
+    const audio = useRef(new Audio()).current;
+    const [isPlaying, setIsPlaying] = useState(false);
 
     const lastQuestionRef = useRef<string>("");
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<unknown>();
     const [answer, setAnswer] = useState<ChatAppResponse>();
-    const [speechUrl, setSpeechUrl] = useState<string | null>(null);
+    const [speechUrl, setSpeechUrl] = useState<(string | null)[]>([]);
 
     const [activeCitation, setActiveCitation] = useState<string>();
     const [activeAnalysisPanelTab, setActiveAnalysisPanelTab] = useState<AnalysisPanelTabs | undefined>(undefined);
@@ -81,14 +83,6 @@ export function Component(): JSX.Element {
     useEffect(() => {
         getConfig();
     }, []);
-
-    useEffect(() => {
-        if (answer && showSpeechOutputAzure) {
-            getSpeechApi(answer.message.content).then(speechUrl => {
-                setSpeechUrl(speechUrl);
-            });
-        }
-    }, [answer]);
 
     const makeApiRequest = async (question: string) => {
         lastQuestionRef.current = question;
@@ -134,7 +128,7 @@ export function Component(): JSX.Element {
             };
             const result = await askApi(request, token);
             setAnswer(result);
-            setSpeechUrl(null);
+            setSpeechUrl([null]);
         } catch (e) {
             setError(e);
         } finally {
@@ -256,13 +250,18 @@ export function Component(): JSX.Element {
                     <div className={styles.askAnswerContainer}>
                         <Answer
                             answer={answer}
+                            index={0}
+                            speechUrls={speechUrl}
+                            updateSpeechUrls={setSpeechUrl}
+                            audio={audio}
+                            isPlaying={isPlaying}
+                            setIsPlaying={setIsPlaying}
                             isStreaming={false}
                             onCitationClicked={x => onShowCitation(x)}
                             onThoughtProcessClicked={() => onToggleTab(AnalysisPanelTabs.ThoughtProcessTab)}
                             onSupportingContentClicked={() => onToggleTab(AnalysisPanelTabs.SupportingContentTab)}
                             showSpeechOutputAzure={showSpeechOutputAzure}
                             showSpeechOutputBrowser={showSpeechOutputBrowser}
-                            speechUrl={speechUrl}
                         />
                     </div>
                 )}

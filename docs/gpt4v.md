@@ -17,7 +17,7 @@ This repository now includes an example of integrating a GPT Vision model with A
 - The ability to deploy a gpt-4o model in the [supported regions](https://learn.microsoft.com/azure/ai-services/openai/concepts/models#standard-deployment-model-availability). If you're not sure, try to create a gpt-4o deployment from your Azure OpenAI deployments page.
 - Ensure that you can deploy the Azure OpenAI resource group in [a region where all required components are available](https://learn.microsoft.com/azure/cognitive-services/openai/concepts/models#model-summary-table-and-region-availability):
   - Azure OpenAI models
-    - gpt-35-turbo
+    - gpt-4o-mini
     - text-embedding-ada-002
     - gpt-4o
   - [Azure AI Vision](https://learn.microsoft.com/azure/ai-services/computer-vision/)

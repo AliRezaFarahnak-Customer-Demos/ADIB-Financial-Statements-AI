@@ -18,7 +18,7 @@
                     "{'role': 'user', 'content': 'Generate search query for: Is dental covered?'}"
                 ],
                 "props": {
-                    "model": "gpt-35-turbo"
+                    "model": "gpt-4o-mini"
                 },
                 "title": "Prompt to generate search query"
             },
@@ -68,7 +68,7 @@
                     "{'role': 'user', 'content': 'Is dental covered?\\n\\nSources:\\nBenefit_Options-2.pdf: There is a whistleblower policy.'}"
                 ],
                 "props": {
-                    "model": "gpt-35-turbo"
+                    "model": "gpt-4o-mini"
                 },
                 "title": "Prompt to generate answer"
             }

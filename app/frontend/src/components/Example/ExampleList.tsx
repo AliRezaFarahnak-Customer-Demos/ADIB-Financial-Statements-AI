@@ -1,11 +1,12 @@
 import { Example } from "./Example";
-
 import styles from "./Example.module.css";
 
 const DEFAULT_EXAMPLES: string[] = [
-    "What is included in my Northwind Health Plus plan that is not in standard?",
-    "What happens in a performance review?",
-    "What does a Product Manager do?"
+    "How did COVID-19 impact ADIB's performance in 2020?",
+    "What recovery strategies did ADIB use in 2021?",
+    "How did ADIB enhance digital banking in 2021?",
+    "What impact did inflation have on ADIB in 2022?",
+    "What regulatory changes affected ADIB in 2023?"
 ];
 
 const GPT4V_EXAMPLES: string[] = [

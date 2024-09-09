@@ -53,7 +53,7 @@
                 ],
                 "props": {
                     "deployment": "test-chatgpt",
-                    "model": "gpt-4o-mini"
+                    "model": "gpt-35-turbo-16k"
                 },
                 "title": "Prompt to generate answer"
             }

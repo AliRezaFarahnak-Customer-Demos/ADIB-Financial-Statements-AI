@@ -54,7 +54,7 @@ Execute the following commands inside your terminal:
     For GPT-4o mini:
 
     ```bash
-    azd env set AZURE_OPENAI_CHATGPT_MODEL gpt-4o-mini
+    azd env set AZURE_OPENAI_CHATGPT_MODEL gpt-35-turbo-16k
     ```
 
 1. To set the Azure OpenAI deployment capacity, run this command with the desired capacity.
@@ -93,7 +93,7 @@ Execute the following commands inside your terminal:
 > To revert back to GPT 3.5, run the following commands:
 >
 > * `azd env set AZURE_OPENAI_CHATGPT_DEPLOYMENT chat` to set the name of your old GPT 3.5 deployment.
-> * `azd env set AZURE_OPENAI_CHATGPT_MODEL gpt-4o-mini` to set the name of your old GPT 3.5 model.
+> * `azd env set AZURE_OPENAI_CHATGPT_MODEL gpt-35-turbo-16k` to set the name of your old GPT 3.5 model.
 > * `azd env set AZURE_OPENAI_CHATGPT_DEPLOYMENT_CAPACITY 30` to set the capacity of your old GPT 3.5 deployment.
 > * `azd env set AZURE_OPENAI_CHATGPT_DEPLOYMENT_VERSION 0613` to set the version number of your old GPT 3.5.
 > * `azd up` to update the provisioned resources.

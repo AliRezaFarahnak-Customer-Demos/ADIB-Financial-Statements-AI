@@ -16,7 +16,7 @@
                     "{'role': 'user', 'content': 'Generate search query for: Are interest rates high?'}"
                 ],
                 "props": {
-                    "model": "gpt-4o-mini"
+                    "model": "gpt-35-turbo-16k"
                 },
                 "title": "Prompt to generate search query"
             },
@@ -64,7 +64,7 @@
                     "{'role': 'user', 'content': 'Are interest rates high?\\n\\nSources:\\nBenefit_Options-2.pdf: There is a whistleblower policy.'}"
                 ],
                 "props": {
-                    "model": "gpt-4o-mini"
+                    "model": "gpt-35-turbo-16k"
                 },
                 "title": "Prompt to generate answer"
             }

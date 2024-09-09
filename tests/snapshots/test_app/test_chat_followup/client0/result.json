@@ -19,7 +19,7 @@
                     "{'role': 'user', 'content': 'Generate search query for: What is the capital of France?'}"
                 ],
                 "props": {
-                    "model": "gpt-4o-mini"
+                    "model": "gpt-35-turbo-16k"
                 },
                 "title": "Prompt to generate search query"
             },
@@ -67,7 +67,7 @@
                     "{'role': 'user', 'content': 'What is the capital of France?\\n\\nSources:\\nBenefit_Options-2.pdf: There is a whistleblower policy.'}"
                 ],
                 "props": {
-                    "model": "gpt-4o-mini"
+                    "model": "gpt-35-turbo-16k"
                 },
                 "title": "Prompt to generate answer"
             }

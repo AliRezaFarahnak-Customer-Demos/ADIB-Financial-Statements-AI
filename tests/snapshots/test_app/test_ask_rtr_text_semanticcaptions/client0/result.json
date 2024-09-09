@@ -52,7 +52,7 @@
                     "{'role': 'user', 'content': 'What is the capital of France?\\nSources:\\n Benefit_Options-2.pdf: Caption: A whistleblower policy.'}"
                 ],
                 "props": {
-                    "model": "gpt-4o-mini"
+                    "model": "gpt-35-turbo-16k"
                 },
                 "title": "Prompt to generate answer"
             }
